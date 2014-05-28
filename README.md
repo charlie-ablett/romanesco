@@ -30,13 +30,13 @@ Or install it yourself as:
 
 ## Usage
 
-    tree = Romanesco.parse "1+10*3"
+    tree = Romanesco::Romanesco.parse "1+10*3"
     result = tree.evaluate #=> 31.0
     original_expression = tree.to_s #=> "1 + 10 * 3"
 
 If you have variables, inject them as follows:
 
-    tree = Romanesco.parse("a*(b+c)")
+    tree = Romanesco::Romanesco.parse("a*(b+c)")
     result = tree.evaluate(a: 5, b: 2, c: 10) # => 100
     original_expression = tree.to_s # => "a * (b + c)"
 
