@@ -1,5 +1,7 @@
 # Romanesco
 
+[![Gem Version](https://badge.fury.io/rb/romanesco.svg)](http://badge.fury.io/rb/romanesco)
+
 Romanesco allows you to parse simple mathematical expressions, and creates a fully object-oriented expression tree for evaluation.
 
 You can inject variable values at runtime so that formulae can be used, edited and re-saved as part of an application. 
