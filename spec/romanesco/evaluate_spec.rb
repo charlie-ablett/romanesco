@@ -47,6 +47,61 @@ describe '#evaluate' do
       tree.evaluate(number_of_giraffes: 4).should == 4
     end
   end
+
+  context 'for valid expressions with other trees' do
+
+    it 'should evaluate recursively when other trees are provided' do
+      tree = parse('something * something_else')
+      second_tree = parse('even_more_awesomeness - sharks')
+
+      tree.evaluate(something: 3, something_else: second_tree, even_more_awesomeness: 16, sharks: 10).should == 18.0
+    end
+
+  end
+
+  context 'for valid expressions with anything that responds to evaluate' do
+
+    class FakeThing
+
+      def evaluate(options={})
+        100
+      end
+
+    end
+
+    it 'should be able to use any class that responds to evaluate' do
+
+      tree = parse('one_hundred + fifty')
+
+      tree.evaluate(one_hundred: FakeThing.new, fifty: 50).should == 150.0
+
+    end
+  end
+
+  context 'for valid expressions with missing variables' do
+
+    it 'should raise an error' do
+      tree = parse('twenty + 2')
+
+      expect { tree.evaluate }.to raise_error
+    end
+
+  end
+
+  context 'it should detect loops' do
+
+    it 'should throw an error if a loop is detected' do
+
+      first_tree = parse('something * something_else')
+      second_tree = parse('first_tree - sharks')
+
+      expect{ first_tree.evaluate(something: 3, something_else: second_tree, first_tree: first_tree, sharks: 10) }.to raise_error(Romanesco::HasInfiniteLoopError, 'Cannot evaluate - infinite loop detected')
+
+    end
+
+  end
+
+
 end
 
 def parse(exp)

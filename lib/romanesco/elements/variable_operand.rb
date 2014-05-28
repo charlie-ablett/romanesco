@@ -1,4 +1,5 @@
 require 'romanesco/elements/operand'
+require 'romanesco/errors'
 
 module Romanesco
 
@@ -11,7 +12,13 @@ module Romanesco
     end
 
     def evaluate(options)
-      options[@name.to_sym].to_f
+      element = options[@name.to_sym]
+      raise MissingVariableValue.new("Missing the variable injection '#{@name}'. ") if element.nil?
+      if element.respond_to?(:evaluate)
+        element.evaluate(options)
+      else
+        options[@name.to_sym].to_f
+      end
     end
 
     def to_s

@@ -30,15 +30,32 @@ Or install it yourself as:
 
 ## Usage
 
-    tree = Romanesco::Romanesco.parse "1+10*3"
+    tree = Romanesco::Romanesco.parse("1+10*3")
     result = tree.evaluate #=> 31.0
     original_expression = tree.to_s #=> "1 + 10 * 3"
 
 If you have variables, inject them as follows:
 
-    tree = Romanesco::Romanesco.parse("a*(b+c)")
-    result = tree.evaluate(a: 5, b: 2, c: 10) # => 100
+    tree = Romanesco::Romanesco.parse("a * (b + c)")
+    result = tree.evaluate(a: 5, b: 2, c: 10) # => 100.0
     original_expression = tree.to_s # => "a * (b + c)"
+    
+In fact, you can inject anything that responds to the method `evaluate(options)`...
+
+    class FakeClass
+      def evaluate(options)
+        100
+      end
+    end
+
+    tree = Romanesco::Romanesco.parse("one_hundred + 2.2)")
+    result = tree.evaluate(one_hundred: FakeClass.new) # => 102.2        
+    
+... including *other trees*.
+    
+    tree1 = Romanesco::Romanesco.parse("honey_badgers + sharks")
+    tree2 = Romanesco::Romanesco.parse("box_jellyfish + jaguars")
+    result = tree1.evaluate(box_jellyfish: 10, jaguars: 4, sharks: tree2, honey_badgers: 1) #=> 15    
 
 ## Contributing
 

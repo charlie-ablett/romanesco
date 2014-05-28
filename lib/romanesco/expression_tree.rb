@@ -1,3 +1,5 @@
+require 'romanesco/errors'
+
 module Romanesco
   class ExpressionTree
     attr_accessor :last_operand, :last_operator, :original_expression
@@ -28,14 +30,14 @@ module Romanesco
     end
 
     def evaluate(options={})
-      starting_point.evaluate(options)
+      start = starting_point
+      check_for_loops(start, options)
+      start.evaluate(options)
     end
 
     def to_s
       starting_point.to_s
     end
-
-    private
 
     def starting_point
       current_node = @last_operand
@@ -44,6 +46,8 @@ module Romanesco
       end
       current_node
     end
+
+    private
 
     def insert_operand(operand)
       if @last_operator
@@ -98,5 +102,28 @@ module Romanesco
 
       @last_operand.parent = operator if @last_operand
     end
+
+    private
+
+    def check_for_loops(start, options)
+      iterate(self, start, options)
+    end
+
+    def iterate(node, element, options)
+      if element.is_a? BinaryOperator
+        iterate node, element.left_operand, options
+        iterate node, element.right_operand, options
+      elsif element.is_a? UnaryOperator
+        iterate node, element.operand, options
+      elsif element.is_a? VariableOperand
+        variable_value = options[element.name.to_sym]
+        if variable_value.respond_to? :starting_point
+          raise HasInfiniteLoopError.new('Cannot evaluate - infinite loop detected') if node == variable_value
+          iterate node, variable_value.starting_point, options if variable_value.respond_to? :evaluate
+        end
+      end
+
+    end
+
   end
 end
