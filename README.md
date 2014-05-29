@@ -50,7 +50,7 @@ In fact, you can inject anything that responds to the message `evaluate(options)
       end
     end
 
-    expression = Romanesco::Romanesco.parse("one_hundred + 2.2)")
+    expression = Romanesco::Romanesco.parse("one_hundred + 2.2")
     result = expression.evaluate(one_hundred: FakeClass.new) # => 102.2        
     
 ... including *other expressions*.
