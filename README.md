@@ -30,17 +30,19 @@ Or install it yourself as:
 
 ## Usage
 
-    tree = Romanesco::Romanesco.parse("1+10*3")
-    result = tree.evaluate #=> 31.0
-    original_expression = tree.to_s #=> "1 + 10 * 3"
+You can use Romanesco as a basic calculator if you want.
+
+    expression = Romanesco::Romanesco.parse("1+10*3")
+    result = expression.evaluate #=> 31.0
+    original_expression = expression.to_s #=> "1 + 10 * 3"
 
 If you have variables, inject them as follows:
 
-    tree = Romanesco::Romanesco.parse("a * (b + c)")
-    result = tree.evaluate(a: 5, b: 2, c: 10) # => 100.0
-    original_expression = tree.to_s # => "a * (b + c)"
+    expression = Romanesco::Romanesco.parse("a * (b + c)")
+    result = expression.evaluate(a: 5, b: 2, c: 10) # => 100.0
+    original_expression_string = expression.to_s # => "a * (b + c)"
     
-In fact, you can inject anything that responds to the method `evaluate(options)`...
+In fact, you can inject anything that responds to the message `evaluate(options)`...
 
     class FakeClass
       def evaluate(options)
@@ -48,14 +50,14 @@ In fact, you can inject anything that responds to the method `evaluate(options)`
       end
     end
 
-    tree = Romanesco::Romanesco.parse("one_hundred + 2.2)")
-    result = tree.evaluate(one_hundred: FakeClass.new) # => 102.2        
+    expression = Romanesco::Romanesco.parse("one_hundred + 2.2)")
+    result = expression.evaluate(one_hundred: FakeClass.new) # => 102.2        
     
-... including *other trees*.
+... including *other expressions*.
     
-    tree1 = Romanesco::Romanesco.parse("honey_badgers + sharks")
-    tree2 = Romanesco::Romanesco.parse("box_jellyfish + jaguars")
-    result = tree1.evaluate(box_jellyfish: 10, jaguars: 4, sharks: tree2, honey_badgers: 1) #=> 15    
+    expression1 = Romanesco::Romanesco.parse("honey_badgers + dangerous_australian_animals")
+    animals = Romanesco::Romanesco.parse("box_jellyfish + snakes")
+    result = expression1.evaluate(box_jellyfish: 10, snakes: 4, dangerous_australian_animals: animals, honey_badgers: 1) #=> 15    
 
 ## Contributing
 
