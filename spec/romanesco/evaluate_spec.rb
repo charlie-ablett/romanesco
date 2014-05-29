@@ -83,7 +83,7 @@ describe '#evaluate' do
     it 'should raise an error' do
       tree = parse('twenty + 2')
 
-      expect { tree.evaluate }.to raise_error
+      expect { tree.evaluate }.to raise_error(Romanesco::MissingVariableValue, "Missing the variable injection 'twenty'")
     end
 
   end

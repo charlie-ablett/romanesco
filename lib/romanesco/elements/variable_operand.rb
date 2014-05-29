@@ -13,7 +13,7 @@ module Romanesco
 
     def evaluate(options)
       element = options[@name.to_sym]
-      raise MissingVariableValue.new("Missing the variable injection '#{@name}'. ") if element.nil?
+      raise MissingVariableValue.new("Missing the variable injection '#{@name}'") if element.nil?
       if element.respond_to?(:evaluate)
         element.evaluate(options)
       else

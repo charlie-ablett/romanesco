@@ -8,7 +8,7 @@ You can inject variable values at runtime so that formulae can be used, edited a
 
 Currently Romanesco supports the four basic operators (addition, subtraction, multiplication, division) as well as parentheses. It supports the use of constants and named variables.
 
-Written by Charlie Ablett and Craig Taube-Schock, Enspiral Craftworks (http://www.enspiral.com).
+Written by Charlie Ablett of Enspiral Craftworks (http://www.enspiral.com). With support from Craig Taube-Schock.
 
 MIT License.
 
