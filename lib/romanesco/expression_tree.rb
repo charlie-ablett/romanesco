@@ -36,7 +36,6 @@ module Romanesco
       check_for_loops(start, options)
       missing_variables = check_for_missing_variables(start, options, [])
       raise MissingVariableValue.new("Missing variables: #{missing_variables.join', '}", missing_variables) unless missing_variables.empty?
-      #keys.all?{|key| hash.has_key?(key)}
       start.evaluate(options)
     end
 

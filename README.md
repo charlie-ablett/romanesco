@@ -8,7 +8,7 @@ You can inject variable values at runtime so that formulae can be used, edited a
 
 Currently Romanesco supports the four basic operators (addition, subtraction, multiplication, division) as well as parentheses. It supports the use of constants and named variables.
 
-Written by Charlie Ablett of Enspiral Craftworks (http://www.enspiral.com). With support from Craig Taube-Schock.
+Written by Charlie Ablett of Enspiral Craftworks (http://www.enspiral.com) with support from Craig Taube-Schock.
 
 MIT License.
 
@@ -53,16 +53,26 @@ In fact, you can inject anything that responds to the message `evaluate(options)
     expression = Romanesco::Romanesco.parse("one_hundred + 2.2")
     result = expression.evaluate(one_hundred: FakeClass.new) # => 102.2        
     
-... including *other expressions* (Don't worry, in this case we *can* detect infinite loops).
+... including *other expressions* (Don't worry, in this case we *can* detect infinite loops):
     
     dangerous_animals = Romanesco::Romanesco.parse("honey_badgers + dangerous_australian_animals")
     australian = Romanesco::Romanesco.parse("box_jellyfish + snakes")
     result = dangerous_animals.evaluate(box_jellyfish: 10, snakes: 4, dangerous_australian_animals: australian, honey_badgers: 1) #=> 15    
 
-Get a list of the variables you'll need by calling `required_variables`
+Get a list of the variables you'll need by calling `required_variables`:
 
     expression = Romanesco::Romanesco.parse("(lions + tigers) * bears")
-    required = expression.required_variables #=> ['lions','tigers','bears']
+    required = expression.required_variables #=> [:lions, :tigers, :bears]
+    
+If you're missing any variables, Romanesco will let you know:
+
+    expression = Romanesco::Romanesco.parse("maine_coon - japanese_bobtail")
+     
+    begin
+      expression.evaluate
+    rescue Romanesco::MissingVariableValue => e
+      e.missing_exceptions #=> [:maine_coon, :japanese_bobtail]
+    end
     
 ## Contributing
 
