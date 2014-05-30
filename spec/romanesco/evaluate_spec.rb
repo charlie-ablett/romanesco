@@ -83,7 +83,7 @@ describe '#evaluate' do
     it 'should raise an error' do
       tree = parse('twenty + 2')
 
-      expect { tree.evaluate }.to raise_error(Romanesco::MissingVariableValue, "Missing the variable injection 'twenty'")
+      expect { tree.evaluate }.to raise_error(Romanesco::MissingVariableValue, "Missing variables: twenty")
     end
 
   end
@@ -98,7 +98,27 @@ describe '#evaluate' do
       expect{ first_tree.evaluate(something: 3, something_else: second_tree, first_tree: first_tree, sharks: 10) }.to raise_error(Romanesco::HasInfiniteLoopError, 'Cannot evaluate - infinite loop detected')
 
     end
+  end
 
+  context 'it should detect other missing variables' do
+    it 'should throw an error if variables are missing' do
+      jerk_animals = parse('jerks_of_the_animal_kingdom - magpies')
+      land_animals = parse('jaguars * moose')
+
+      expect{ jerk_animals.evaluate({jerks_of_the_animal_kingdom: land_animals}) }.to raise_error(Romanesco::MissingVariableValue, 'Missing variables: jaguars, moose, magpies')
+    end
+
+    it 'should provide the missing variables' do
+      jerk_animals = parse('jerks_of_the_animal_kingdom - magpies')
+      land_animals = parse('jaguars * moose')
+
+      begin
+        jerk_animals.evaluate({jerks_of_the_animal_kingdom: land_animals})
+        fail
+      rescue Romanesco::MissingVariableValue => e
+        e.missing_exceptions.should == [:jaguars, :moose, :magpies]
+      end
+    end
   end
 
 

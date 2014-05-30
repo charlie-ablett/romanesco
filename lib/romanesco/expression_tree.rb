@@ -3,9 +3,11 @@ require 'romanesco/errors'
 module Romanesco
   class ExpressionTree
     attr_accessor :last_operand, :last_operator, :original_expression
+    attr_reader :required_variables
 
     def initialize(expression)
       @original_expression = expression
+      @required_variables = []
     end
 
     def add(element)
@@ -32,6 +34,9 @@ module Romanesco
     def evaluate(options={})
       start = starting_point
       check_for_loops(start, options)
+      missing_variables = check_for_missing_variables(start, options, [])
+      raise MissingVariableValue.new("Missing variables: #{missing_variables.join', '}", missing_variables) unless missing_variables.empty?
+      #keys.all?{|key| hash.has_key?(key)}
       start.evaluate(options)
     end
 
@@ -59,6 +64,7 @@ module Romanesco
         operand.parent = @last_operator
       end
 
+      @required_variables << operand.name.to_sym if operand.is_a? VariableOperand
       @last_operand = operand
     end
 
@@ -103,26 +109,37 @@ module Romanesco
       @last_operand.parent = operator if @last_operand
     end
 
-    private
-
     def check_for_loops(start, options)
-      iterate(self, start, options)
-    end
-
-    def iterate(node, element, options)
-      if element.is_a? BinaryOperator
-        iterate node, element.left_operand, options
-        iterate node, element.right_operand, options
-      elsif element.is_a? UnaryOperator
-        iterate node, element.operand, options
-      elsif element.is_a? VariableOperand
-        variable_value = options[element.name.to_sym]
+      iterate_to_variables(self, start, options) do |node, element, opts, block|
+        variable_value = opts[element.name.to_sym]
         if variable_value.respond_to? :starting_point
           raise HasInfiniteLoopError.new('Cannot evaluate - infinite loop detected') if node == variable_value
-          iterate node, variable_value.starting_point, options if variable_value.respond_to? :evaluate
+          iterate_to_variables node, variable_value.starting_point, opts, &block if variable_value.respond_to? :evaluate
         end
       end
+    end
 
+    def check_for_missing_variables(start, options, missing_variables)
+      iterate_to_variables(missing_variables, start, options) do |missing_variables, element, opts, block|
+        variable_value = opts[element.name.to_sym]
+        if variable_value.respond_to? :starting_point
+          iterate_to_variables missing_variables, variable_value.starting_point, opts, &block if variable_value.respond_to? :evaluate
+        elsif variable_value.nil?
+          missing_variables << element.name.to_sym
+        end
+      end
+      missing_variables
+    end
+
+    def iterate_to_variables(node, element, options, &block)
+      if element.is_a? BinaryOperator
+        iterate_to_variables node, element.left_operand, options, &block
+        iterate_to_variables node, element.right_operand, options, &block
+      elsif element.is_a? UnaryOperator
+        iterate_to_variables node, element.operand, options, &block
+      elsif element.is_a? VariableOperand
+        block.call(node, element, options, block)
+      end
     end
 
   end

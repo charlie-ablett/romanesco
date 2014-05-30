@@ -53,12 +53,17 @@ In fact, you can inject anything that responds to the message `evaluate(options)
     expression = Romanesco::Romanesco.parse("one_hundred + 2.2")
     result = expression.evaluate(one_hundred: FakeClass.new) # => 102.2        
     
-... including *other expressions*.
+... including *other expressions* (Don't worry, in this case we *can* detect infinite loops).
     
-    expression1 = Romanesco::Romanesco.parse("honey_badgers + dangerous_australian_animals")
-    animals = Romanesco::Romanesco.parse("box_jellyfish + snakes")
-    result = expression1.evaluate(box_jellyfish: 10, snakes: 4, dangerous_australian_animals: animals, honey_badgers: 1) #=> 15    
+    dangerous_animals = Romanesco::Romanesco.parse("honey_badgers + dangerous_australian_animals")
+    australian = Romanesco::Romanesco.parse("box_jellyfish + snakes")
+    result = dangerous_animals.evaluate(box_jellyfish: 10, snakes: 4, dangerous_australian_animals: australian, honey_badgers: 1) #=> 15    
 
+Get a list of the variables you'll need by calling `required_variables`
+
+    expression = Romanesco::Romanesco.parse("(lions + tigers) * bears")
+    required = expression.required_variables #=> ['lions','tigers','bears']
+    
 ## Contributing
 
 1. Fork it
