@@ -66,13 +66,19 @@ Get a list of the variables you'll need by calling `required_variables`:
     
 If you're missing any variables, Romanesco will let you know:
 
-    expression = Romanesco.parse("maine_coon - japanese_bobtail")
+    expression = Romanesco.parse("maine_coon * japanese_bobtail")
      
     begin
       expression.evaluate
     rescue Romanesco::MissingVariables => e
       e.missing_variables #=> [:maine_coon, :japanese_bobtail]
     end
+    
+Otherwise, you can provide a default value for any missing variables:
+    
+    expression = Romanesco.parse("maine_coon * japanese_bobtail")
+    
+    expression.evaluate({}, 3) #=> 9.0
     
 ## Contributing
 

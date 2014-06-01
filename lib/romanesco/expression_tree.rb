@@ -31,12 +31,12 @@ module Romanesco
       @last_operator = current_node.parent || current_node
     end
 
-    def evaluate(options={})
+    def evaluate(options={}, default_value=nil)
       start = starting_point
       check_for_loops(start, options)
-      missing_variables = check_for_missing_variables(start, options, [])
+      missing_variables, new_options = check_for_missing_variables(start, options, [], default_value)
       raise MissingVariables.new("Missing variables: #{missing_variables.join', '}", missing_variables) unless missing_variables.empty?
-      start.evaluate(options)
+      start.evaluate(new_options)
     end
 
     def to_s
@@ -118,16 +118,17 @@ module Romanesco
       end
     end
 
-    def check_for_missing_variables(start, options, missing_variables)
+    def check_for_missing_variables(start, options, missing_variables, default_value)
       iterate_to_variables(missing_variables, start, options) do |missing_variables, element, opts, block|
         variable_value = opts[element.name.to_sym]
         if variable_value.respond_to? :starting_point
           iterate_to_variables missing_variables, variable_value.starting_point, opts, &block if variable_value.respond_to? :evaluate
         elsif variable_value.nil?
-          missing_variables << element.name.to_sym
+          options[element.name.to_sym] = default_value
+          missing_variables << element.name.to_sym unless default_value
         end
       end
-      missing_variables
+      return missing_variables, options
     end
 
     def iterate_to_variables(node, element, options, &block)

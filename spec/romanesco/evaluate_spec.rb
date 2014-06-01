@@ -119,9 +119,15 @@ describe '#evaluate' do
         e.missing_variables.should == [:jaguars, :moose, :magpies]
       end
     end
+
+    it 'should fill in with the default value if it is provided' do
+      jerk_animals = parse('jerks_of_the_animal_kingdom - magpies')
+      land_animals = parse('jaguars * moose')
+
+      jerk_animals.evaluate({jerks_of_the_animal_kingdom: land_animals}, 0).should == 0
+    end
+
   end
-
-
 end
 
 def parse(exp)
