@@ -70,7 +70,7 @@ If you're missing any variables, Romanesco will let you know:
      
     begin
       expression.evaluate
-    rescue Romanesco::MissingVariableValue => e
+    rescue Romanesco::MissingVariables => e
       e.missing_variables #=> [:maine_coon, :japanese_bobtail]
     end
     
