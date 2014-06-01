@@ -124,7 +124,7 @@ describe '#evaluate' do
       jerk_animals = parse('jerks_of_the_animal_kingdom - magpies')
       land_animals = parse('jaguars * moose')
 
-      jerk_animals.evaluate({jerks_of_the_animal_kingdom: land_animals}, 0).should == 0
+      jerk_animals.evaluate({jerks_of_the_animal_kingdom: land_animals}, 3).should == 6.0
     end
 
   end
