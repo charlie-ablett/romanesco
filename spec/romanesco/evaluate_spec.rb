@@ -83,7 +83,7 @@ describe '#evaluate' do
     it 'should raise an error' do
       tree = parse('twenty + 2')
 
-      expect { tree.evaluate }.to raise_error(Romanesco::MissingVariableValue, "Missing variables: twenty")
+      expect { tree.evaluate }.to raise_error(Romanesco::MissingVariables, "Missing variables: twenty")
     end
 
   end
@@ -105,7 +105,7 @@ describe '#evaluate' do
       jerk_animals = parse('jerks_of_the_animal_kingdom - magpies')
       land_animals = parse('jaguars * moose')
 
-      expect{ jerk_animals.evaluate({jerks_of_the_animal_kingdom: land_animals}) }.to raise_error(Romanesco::MissingVariableValue, 'Missing variables: jaguars, moose, magpies')
+      expect{ jerk_animals.evaluate({jerks_of_the_animal_kingdom: land_animals}) }.to raise_error(Romanesco::MissingVariables, 'Missing variables: jaguars, moose, magpies')
     end
 
     it 'should provide the missing variables' do
@@ -115,8 +115,8 @@ describe '#evaluate' do
       begin
         jerk_animals.evaluate({jerks_of_the_animal_kingdom: land_animals})
         fail
-      rescue Romanesco::MissingVariableValue => e
-        e.missing_exceptions.should == [:jaguars, :moose, :magpies]
+      rescue Romanesco::MissingVariables => e
+        e.missing_variables.should == [:jaguars, :moose, :magpies]
       end
     end
   end
@@ -125,5 +125,5 @@ describe '#evaluate' do
 end
 
 def parse(exp)
-  Romanesco::Romanesco.parse(exp)
+  Romanesco.parse(exp)
 end

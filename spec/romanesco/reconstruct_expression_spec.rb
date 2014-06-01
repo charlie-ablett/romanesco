@@ -53,5 +53,5 @@ describe '#to_s' do
 end
 
 def parse(exp)
-  Romanesco::Romanesco.parse(exp)
+  Romanesco.parse(exp)
 end

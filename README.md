@@ -32,13 +32,13 @@ Or install it yourself as:
 
 You can use Romanesco as a basic calculator if you want.
 
-    expression = Romanesco::Romanesco.parse("1+10*3")
+    expression = Romanesco.parse("1+10*3")
     result = expression.evaluate #=> 31.0
     original_expression = expression.to_s #=> "1 + 10 * 3"
 
 If you have variables, inject them as follows:
 
-    expression = Romanesco::Romanesco.parse("a * (b + c)")
+    expression = Romanesco.parse("a * (b + c)")
     result = expression.evaluate(a: 5, b: 2, c: 10) # => 100.0
     original_expression_string = expression.to_s # => "a * (b + c)"
     
@@ -50,28 +50,28 @@ In fact, you can inject anything that responds to the message `evaluate(options)
       end
     end
 
-    expression = Romanesco::Romanesco.parse("one_hundred + 2.2")
+    expression = Romanesco.parse("one_hundred + 2.2")
     result = expression.evaluate(one_hundred: FakeClass.new) # => 102.2        
     
 ... including *other expressions* (Don't worry, in this case we *can* detect infinite loops):
     
-    dangerous_animals = Romanesco::Romanesco.parse("honey_badgers + dangerous_australian_animals")
-    australian = Romanesco::Romanesco.parse("box_jellyfish + snakes")
+    dangerous_animals = Romanesco.parse("honey_badgers + dangerous_australian_animals")
+    australian = Romanesco.parse("box_jellyfish + snakes")
     result = dangerous_animals.evaluate(box_jellyfish: 10, snakes: 4, dangerous_australian_animals: australian, honey_badgers: 1) #=> 15    
 
 Get a list of the variables you'll need by calling `required_variables`:
 
-    expression = Romanesco::Romanesco.parse("(lions + tigers) * bears")
+    expression = Romanesco.parse("(lions + tigers) * bears")
     required = expression.required_variables #=> [:lions, :tigers, :bears]
     
 If you're missing any variables, Romanesco will let you know:
 
-    expression = Romanesco::Romanesco.parse("maine_coon - japanese_bobtail")
+    expression = Romanesco.parse("maine_coon - japanese_bobtail")
      
     begin
       expression.evaluate
     rescue Romanesco::MissingVariableValue => e
-      e.missing_exceptions #=> [:maine_coon, :japanese_bobtail]
+      e.missing_variables #=> [:maine_coon, :japanese_bobtail]
     end
     
 ## Contributing

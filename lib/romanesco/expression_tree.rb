@@ -35,7 +35,7 @@ module Romanesco
       start = starting_point
       check_for_loops(start, options)
       missing_variables = check_for_missing_variables(start, options, [])
-      raise MissingVariableValue.new("Missing variables: #{missing_variables.join', '}", missing_variables) unless missing_variables.empty?
+      raise MissingVariables.new("Missing variables: #{missing_variables.join', '}", missing_variables) unless missing_variables.empty?
       start.evaluate(options)
     end
 
