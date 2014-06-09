@@ -18,15 +18,11 @@ module Romanesco
     private
 
     def validate_expression(raw_expression)
-      chain = build_chain
+      chain = build_chain([Validators::CharacterValidator, Validators::ParenthesisCountValidator])
       chain.execute(raw_expression)
     end
 
-    def build_chain
-      chain [Validators::CharacterValidator, Validators::ParenthesisCountValidator]
-    end
-
-    def chain(classes)
+    def build_chain(classes)
       last = nil
       classes.reverse.each do |klass|
         last = klass.new(last)
