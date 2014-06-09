@@ -27,8 +27,7 @@ module Romanesco
 
       current_node.precedence = 0
 
-      @last_operand = current_node.parent || current_node
-      @last_operator = current_node.parent || current_node
+      @last_operand, @last_operator = current_node.parent || current_node
     end
 
     def evaluate(options={}, default_value=nil)
