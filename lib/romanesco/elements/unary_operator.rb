@@ -27,7 +27,7 @@ module Romanesco
     end
 
     def insert_element(element)
-      self.operand = element
+      @operand = element
       element.parent = self if element
     end
   end

@@ -52,15 +52,14 @@ module Romanesco
 
     private
 
+
+    def insert_element_to_right(element)
+      @right_operand = element
+      element.parent = self if element
+    end
+
     def insert_operand(operand)
-      if @last_operator
-        if @last_operator.is_a? BinaryOperator
-          @last_operator.right_operand = operand
-        elsif @last_operator.is_a? UnaryOperator
-          @last_operator.operand = operand
-        end
-        operand.parent = @last_operator
-      end
+      @last_operator.insert_element_to_right(operand) if @last_operator
 
       @required_variables << operand.name.to_sym if operand.is_a? VariableOperand
       @last_operand = operand
