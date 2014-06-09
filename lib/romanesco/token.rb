@@ -15,6 +15,10 @@ module Romanesco
     def initialize(string)
       @expression_part = string
     end
+
+    def element
+      raise NotImplementedError
+    end
   end
 
   class OperatorToken < Token

@@ -24,7 +24,6 @@ module Romanesco
     end
 
     def self.token_to_element(token)
-      raise InvalidExpressionError unless token.respond_to? :element
       token.element
     end
 
