@@ -1,10 +1,3 @@
-require 'romanesco/elements/addition_operator'
-require 'romanesco/elements/subtraction_operator'
-require 'romanesco/elements/multiplication_operator'
-require 'romanesco/elements/division_operator'
-require 'romanesco/elements/parentheses_operator'
-require 'romanesco/elements/variable_operand'
-require 'romanesco/elements/constant_operand'
 require 'romanesco/token'
 
 module Romanesco
@@ -31,14 +24,8 @@ module Romanesco
     end
 
     def self.token_to_element(token)
-      return AdditionOperator if token.is_a? AdditionToken
-      return SubtractionOperator if token.is_a? SubtractionToken
-      return MultiplicationOperator if token.is_a? MultiplicationToken
-      return DivisionOperator if token.is_a? DivisionToken
-      return ParenthesesOperator if token.is_a?(OpenParenthesisToken)
-      return ConstantOperand if token.is_a? ConstantToken
-      return VariableOperand if token.is_a? VariableToken
-      raise InvalidExpressionError
+      raise InvalidExpressionError unless token.respond_to? :element
+      token.element
     end
 
     def self.transition(tree, tokens)
