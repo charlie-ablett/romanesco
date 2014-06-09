@@ -6,8 +6,8 @@ module Romanesco
     end
 
     def evaluate(options)
-      super(options)
-      @left_result - @right_result
+      left_result, right_result = super(options)
+      left_result - right_result
     end
 
     def default_precedence

@@ -11,8 +11,9 @@ module Romanesco
 
     def evaluate(options)
       check_for_blank_symbol
-      @left_result = @left_operand.evaluate(options)
-      @right_result = @right_operand.evaluate(options)
+      left_result = @left_operand.evaluate(options)
+      right_result = @right_operand.evaluate(options)
+      return left_result, right_result
     end
 
     def to_s
