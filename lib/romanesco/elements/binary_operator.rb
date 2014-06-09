@@ -19,5 +19,15 @@ module Romanesco
       "#{@left_operand.to_s} #{symbol} #{@right_operand.to_s}"
     end
 
+    def insert_element_to_left(element)
+      self.left_operand = element
+      element.parent = self if element
+    end
+
+    def insert_element_to_right(element)
+      self.right_operand = element
+      element.parent = self if element
+    end
+
   end
 end

@@ -83,28 +83,16 @@ module Romanesco
     end
 
     def insert_operator_in_place(operator)
-      operator.left_operand = @last_operand if operator.is_a? BinaryOperator
-      operator.operand = @last_operand if operator.is_a? UnaryOperator
-      @last_operand.parent = operator
-
-      @last_operator.right_operand = operator if @last_operator.is_a? BinaryOperator
-      @last_operator.operand = operator if @last_operator.is_a? UnaryOperator
-
-      operator.parent = @last_operator
+      operator.insert_element_to_left(@last_operand)
+      @last_operator.insert_element_to_right(operator)
     end
 
     def insert_operator_up_tree(operator)
-      operator.left_operand = @last_operator if operator.is_a? BinaryOperator
-      operator.operand = @last_operator if operator.is_a? UnaryOperator
-
-      @last_operator.parent = operator
+      operator.insert_element_to_left(@last_operator)
     end
 
     def insert_operator_to_left(operator)
-      operator.left_operand = @last_operand if operator.is_a? BinaryOperator
-      operator.operand = @last_operand if operator.is_a? UnaryOperator
-
-      @last_operand.parent = operator if @last_operand
+      operator.insert_element_to_left(@last_operand)
     end
 
     def check_for_loops(start, options)

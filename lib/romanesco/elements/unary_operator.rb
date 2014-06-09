@@ -18,5 +18,17 @@ module Romanesco
       "(#{@operand.to_s})"
     end
 
+    def insert_element_to_left(element)
+      insert_element(element)
+    end
+
+    def insert_element_to_right(element)
+      insert_element(element)
+    end
+
+    def insert_element(element)
+      self.operand = element
+      element.parent = self if element
+    end
   end
 end
