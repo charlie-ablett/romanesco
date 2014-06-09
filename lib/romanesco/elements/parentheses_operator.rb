@@ -7,8 +7,8 @@ module Romanesco
       @symbol = '()'
     end
 
-    def precedence
-      @precedence || 100
+    def default_precedence
+      100
     end
 
   end

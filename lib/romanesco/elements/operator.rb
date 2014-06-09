@@ -10,7 +10,7 @@ module Romanesco
     end
 
     def precedence
-      raise NotImplementedError
+      @precedence || default_precedence
     end
 
     def check_for_blank_symbol
@@ -19,6 +19,10 @@ module Romanesco
 
     def precedence=(value)
       @precedence = value
+    end
+
+    def default_precedence
+      raise NotImplementedError
     end
 
   end

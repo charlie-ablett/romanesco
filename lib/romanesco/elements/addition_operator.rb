@@ -12,8 +12,8 @@ module Romanesco
       @left_result + @right_result
     end
 
-    def precedence
-      @precedence || 10
+    def default_precedence
+      10
     end
 
   end
