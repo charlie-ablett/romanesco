@@ -52,12 +52,6 @@ module Romanesco
 
     private
 
-
-    def insert_element_to_right(element)
-      @right_operand = element
-      element.parent = self if element
-    end
-
     def insert_operand(operand)
       @last_operator.insert_element_to_right(operand) if @last_operator
 
