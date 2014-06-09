@@ -23,8 +23,15 @@ module Romanesco
     end
 
     def build_chain
-      step2 = Validators::ParenthesisCountValidator.new
-      step1 = Validators::CharacterValidator.new(step2)
+      chain [Validators::CharacterValidator, Validators::ParenthesisCountValidator]
+    end
+
+    def chain(classes)
+      last = nil
+      classes.reverse.each do |klass|
+        last = klass.new(last)
+      end
+      last
     end
   end
 end
