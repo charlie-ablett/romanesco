@@ -38,5 +38,19 @@ module Romanesco
       self.insert_element_to_left(last_operand)
     end
 
+    def connect(last_operator, last_operand)
+      if last_operator && last_operator.is_a?(ParenthesesOperator) && last_operator.precedence > self.precedence
+        connect_in_place(last_operator, last_operand)
+      elsif last_operator && last_operator.is_a?(ParenthesesOperator) && last_operator.precedence < self.precedence
+        connect_up_tree(last_operator)
+      elsif last_operator && last_operator.precedence >= self.precedence
+        connect_up_tree(last_operator)
+      elsif last_operator
+        connect_in_place(last_operator, last_operand)
+      else
+        connect_to_left(last_operand)
+      end
+    end
+
   end
 end

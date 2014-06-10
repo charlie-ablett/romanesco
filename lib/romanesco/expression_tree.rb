@@ -53,7 +53,7 @@ module Romanesco
     private
 
     def insert_operand(operand)
-      #@last_operator.connect_element(operand) if @last_operator
+      #@last_operator.connect(@last_operator, @last_operand) if @last_operator
       @last_operator.insert_element_to_right(operand) if @last_operator
 
       @required_variables << operand.name.to_sym if operand.is_a? VariableOperand
@@ -61,20 +61,10 @@ module Romanesco
     end
 
     def insert_operator(operator)
-      if @last_operator && @last_operator.is_a?(ParenthesesOperator) && @last_operator.precedence > operator.precedence
-        operator.connect_in_place(@last_operator, @last_operand)
-      elsif @last_operator && @last_operator.is_a?(ParenthesesOperator) && @last_operator.precedence < operator.precedence
-        operator.connect_up_tree(last_operator)
-      elsif @last_operator && @last_operator.precedence >= operator.precedence
-        operator.connect_up_tree(last_operator)
-      elsif @last_operator
-        operator.connect_in_place(@last_operator, @last_operand)
-      else
-        operator.connect_to_left(last_operand)
-      end
-
+      operator.connect(@last_operator, @last_operand)
       @last_operator = operator
     end
+
     def check_for_loops(start, options)
       iterate_to_variables(self, start, options) do |node, element, opts, block|
         variable_value = opts[element.name.to_sym]
