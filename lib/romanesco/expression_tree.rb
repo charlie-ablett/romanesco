@@ -53,6 +53,7 @@ module Romanesco
     private
 
     def insert_operand(operand)
+      #@last_operator.connect_element(operand) if @last_operator
       @last_operator.insert_element_to_right(operand) if @last_operator
 
       @required_variables << operand.name.to_sym if operand.is_a? VariableOperand
@@ -61,31 +62,31 @@ module Romanesco
 
     def insert_operator(operator)
       if @last_operator && @last_operator.is_a?(ParenthesesOperator) && @last_operator.precedence > operator.precedence
-        insert_operator_in_place(operator)
+        insert_operator_in_place(@last_operator, @last_operand, operator)
       elsif @last_operator && @last_operator.is_a?(ParenthesesOperator) && @last_operator.precedence < operator.precedence
-        insert_operator_up_tree(operator)
+        insert_operator_up_tree(last_operator, operator)
       elsif @last_operator && @last_operator.precedence >= operator.precedence
-        insert_operator_up_tree(operator)
+        insert_operator_up_tree(last_operator, operator)
       elsif @last_operator
-        insert_operator_in_place(operator)
+        insert_operator_in_place(@last_operator, @last_operand, operator)
       else
-        insert_operator_to_left(operator)
+        insert_operator_to_left(last_operand, operator)
       end
 
       @last_operator = operator
     end
 
-    def insert_operator_in_place(operator)
-      operator.insert_element_to_left(@last_operand)
-      @last_operator.insert_element_to_right(operator)
+    def insert_operator_in_place(last_operator, last_operand, operator)
+      operator.insert_element_to_left(last_operand)
+      last_operator.insert_element_to_right(operator)
     end
 
-    def insert_operator_up_tree(operator)
-      operator.insert_element_to_left(@last_operator)
+    def insert_operator_up_tree(last_operator, operator)
+      operator.insert_element_to_left(last_operator)
     end
 
-    def insert_operator_to_left(operator)
-      operator.insert_element_to_left(@last_operand)
+    def insert_operator_to_left(last_operand, operator)
+      operator.insert_element_to_left(last_operand)
     end
 
     def check_for_loops(start, options)
