@@ -37,6 +37,12 @@ describe '#evaluate' do
 
       tree.evaluate.should == 31
     end
+
+    it 'should use division and subtraction with more than two operands' do
+      tree = parse('3-2-1')
+
+      tree.evaluate.should == 0
+    end
   end
 
   context 'for valid expressions with variables' do
@@ -69,7 +75,7 @@ describe '#evaluate' do
 
     end
 
-    it 'should be able to use any class that responds to evaluate' do
+    it 'should be able to use any class' do
 
       tree = parse('one_hundred + fifty')
 

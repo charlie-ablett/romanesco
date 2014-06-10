@@ -22,12 +22,14 @@ module Romanesco
 
     def insert_element_to_left(element)
       @left_operand = element
-      element.parent = self if element
+      element.parent = self
+      element
     end
 
     def insert_element_to_right(element)
       @right_operand = element
-      element.parent = self if element
+      element.parent = self
+      element
     end
 
   end

@@ -29,6 +29,7 @@ module Romanesco
     def insert_element(element)
       @operand = element
       element.parent = self if element
+      element
     end
   end
 end

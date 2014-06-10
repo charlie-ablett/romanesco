@@ -12,7 +12,6 @@ module Romanesco
 
     def add(element)
       element.connect(@last_operator, @last_operand)
-
       @last_operand = element if element.is_a? Operand
       @last_operator = element if element.is_a? Operator
       @required_variables << element.name.to_sym if element.is_a? VariableOperand
@@ -21,13 +20,13 @@ module Romanesco
     def close_parenthesis
       current_node = @last_operand
 
-      until current_node.is_a? ParenthesesOperator
+      until current_node.is_a? ParenthesesOperator || current_node.parent.nil?
         current_node = current_node.parent
       end
 
       current_node.precedence = 0
 
-      @last_operand, @last_operator = current_node.parent || current_node
+      @last_operand = @last_operator = current_node.parent || current_node
     end
 
     def evaluate(options={}, default_value=nil)
