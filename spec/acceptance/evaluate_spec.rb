@@ -43,6 +43,12 @@ describe '#evaluate' do
 
       tree.evaluate.should == 0
     end
+
+    it 'should divide successfully' do
+      tree = parse('4/2')
+
+      tree.evaluate.should == 2
+    end
   end
 
   context 'for valid expressions with variables' do
@@ -61,6 +67,29 @@ describe '#evaluate' do
       second_tree = parse('even_more_awesomeness - sharks')
 
       tree.evaluate(something: 3, something_else: second_tree, even_more_awesomeness: 16, sharks: 10).should == 18.0
+    end
+
+    context 'with multiple levels' do
+      let!(:m1) { parse("var_one + var_two * 100") }
+      let!(:m2) { parse('metric_three + metric_four') }
+      let!(:m3) { parse("var_four / 2") }
+      let!(:m4) { parse("(var_three - var_two) * 1150") }
+
+      it 'should evaluate recursively with more levels' do
+        m1.evaluate({var_one: 1, var_two: 2}).should == 201.0
+      end
+
+      it 'should evaluate recursively with more levels' do
+        m2.evaluate({metric_three: m3, metric_four: m4, var_one: 1, var_two: 2, var_three: 3, var_four: 4}).should == 1152.0
+      end
+
+      it 'should evaluate recursively with more levels' do
+        m3.evaluate({var_four: 4}).should == 2.0
+      end
+
+      it 'should evaluate recursively with more levels' do
+        m4.evaluate({var_two: 2, var_three: 3}).should == 1150.0
+      end
     end
 
   end
@@ -135,6 +164,8 @@ describe '#evaluate' do
 
   end
 end
+
+
 
 def parse(exp)
   Romanesco.parse(exp)
