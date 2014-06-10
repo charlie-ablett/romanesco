@@ -43,11 +43,12 @@ module Romanesco
     end
 
     def starting_point
+      return @starting_point if @starting_point
       current_node = @last_operand
       until current_node.parent.nil?
         current_node = current_node.parent
       end
-      current_node
+      @starting_point = current_node
     end
 
     private
