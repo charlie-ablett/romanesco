@@ -21,8 +21,8 @@ module Romanesco
 
       def transition(tree, tokens)
         if tokens.empty?
-          raise InvalidExpressionError unless @finishing_state
-          return tree
+          return tree if @finishing_state
+          raise InvalidExpressionError
         end
         current_token = tokens.shift
         tree.add(current_token.element.new(current_token.expression_part)) unless current_token.is_a? CloseParenthesisToken
