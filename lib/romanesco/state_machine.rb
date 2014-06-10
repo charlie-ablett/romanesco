@@ -40,25 +40,25 @@ module Romanesco
   end
 
   class StateZero < ExpressionState
-    transitions({ OperandToken => 'StateOne',
-        OpenParenthesisToken => 'StateZero' })
+    transitions( OperandToken => 'StateOne',
+        OpenParenthesisToken => 'StateZero' )
   end
 
   class StateOne < ExpressionState
-    transitions({ OperatorToken => 'StateTwo',
-      CloseParenthesisToken => 'StateOne' })
+    transitions( OperatorToken => 'StateTwo',
+      CloseParenthesisToken => 'StateOne' )
 
     finish_here
   end
 
   class StateTwo < ExpressionState
-    transitions({ OperandToken => 'StateThree',
-        OpenParenthesisToken => 'StateZero' })
+    transitions( OperandToken => 'StateThree',
+        OpenParenthesisToken => 'StateZero' )
   end
 
   class StateThree < ExpressionState
-    transitions({ OperatorToken => 'StateTwo',
-      CloseParenthesisToken => 'StateOne'})
+    transitions( OperatorToken => 'StateTwo',
+      CloseParenthesisToken => 'StateOne' )
 
     finish_here
   end
