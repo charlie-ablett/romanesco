@@ -62,33 +62,19 @@ module Romanesco
 
     def insert_operator(operator)
       if @last_operator && @last_operator.is_a?(ParenthesesOperator) && @last_operator.precedence > operator.precedence
-        insert_operator_in_place(@last_operator, @last_operand, operator)
+        operator.connect_in_place(@last_operator, @last_operand)
       elsif @last_operator && @last_operator.is_a?(ParenthesesOperator) && @last_operator.precedence < operator.precedence
-        insert_operator_up_tree(last_operator, operator)
+        operator.connect_up_tree(last_operator)
       elsif @last_operator && @last_operator.precedence >= operator.precedence
-        insert_operator_up_tree(last_operator, operator)
+        operator.connect_up_tree(last_operator)
       elsif @last_operator
-        insert_operator_in_place(@last_operator, @last_operand, operator)
+        operator.connect_in_place(@last_operator, @last_operand)
       else
-        insert_operator_to_left(last_operand, operator)
+        operator.connect_to_left(last_operand)
       end
 
       @last_operator = operator
     end
-
-    def insert_operator_in_place(last_operator, last_operand, operator)
-      operator.insert_element_to_left(last_operand)
-      last_operator.insert_element_to_right(operator)
-    end
-
-    def insert_operator_up_tree(last_operator, operator)
-      operator.insert_element_to_left(last_operator)
-    end
-
-    def insert_operator_to_left(last_operand, operator)
-      operator.insert_element_to_left(last_operand)
-    end
-
     def check_for_loops(start, options)
       iterate_to_variables(self, start, options) do |node, element, opts, block|
         variable_value = opts[element.name.to_sym]
