@@ -19,9 +19,17 @@ module Romanesco
     def element
       raise NotImplementedError
     end
+
+    def state_machine_class
+      self.class
+    end
   end
 
   class OperatorToken < Token
+
+    def state_machine_class
+      OperatorToken
+    end
   end
 
   class MultiplicationToken < OperatorToken
@@ -50,6 +58,11 @@ module Romanesco
 
 
   class OperandToken < Token
+
+    def state_machine_class
+      OperandToken
+    end
+
   end
 
   class VariableToken < OperandToken
