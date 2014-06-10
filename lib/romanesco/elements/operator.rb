@@ -25,19 +25,6 @@ module Romanesco
       raise NotImplementedError
     end
 
-    def connect_in_place(last_operator, last_operand)
-      self.insert_element_to_left(last_operand)
-      last_operator.insert_element_to_right(self)
-    end
-
-    def connect_up_tree(last_operator)
-      self.insert_element_to_left(last_operator)
-    end
-
-    def connect_to_left(last_operand)
-      self.insert_element_to_left(last_operand)
-    end
-
     def connect(last_operator, last_operand)
       if last_operator && last_operator.is_a?(ParenthesesOperator) && last_operator.precedence > self.precedence
         connect_in_place(last_operator, last_operand)
@@ -52,5 +39,19 @@ module Romanesco
       end
     end
 
+    private
+
+    def connect_in_place(last_operator, last_operand)
+      self.insert_element_to_left(last_operand)
+      last_operator.insert_element_to_right(self)
+    end
+
+    def connect_up_tree(last_operator)
+      self.insert_element_to_left(last_operator)
+    end
+
+    def connect_to_left(last_operand)
+      self.insert_element_to_left(last_operand)
+    end
   end
 end

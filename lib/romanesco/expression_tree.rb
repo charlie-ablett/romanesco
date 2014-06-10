@@ -53,8 +53,7 @@ module Romanesco
     private
 
     def insert_operand(operand)
-      #@last_operator.connect(@last_operator, @last_operand) if @last_operator
-      @last_operator.insert_element_to_right(operand) if @last_operator
+      operand.connect(@last_operator, @last_operand) if @last_operator
 
       @required_variables << operand.name.to_sym if operand.is_a? VariableOperand
       @last_operand = operand
