@@ -5,14 +5,14 @@ module Romanesco
   class ExpressionState
 
     class << self
-      def valid_finishing_state?
-        raise NotImplementedError
-      end
-
       def next_state(token)
         state = @states[token.state_machine_class]
         return state if state
         raise InvalidExpressionError
+      end
+
+      def finish_here
+        @finishing_state = true
       end
 
       def transitions(value)
@@ -21,7 +21,7 @@ module Romanesco
 
       def transition(tree, tokens)
         if tokens.empty?
-          raise InvalidExpressionError unless valid_finishing_state?
+          raise InvalidExpressionError unless @finishing_state
           return tree
         end
         current_token = tokens.shift
@@ -42,37 +42,24 @@ module Romanesco
   class StateZero < ExpressionState
     transitions({ OperandToken => 'StateOne',
         OpenParenthesisToken => 'StateZero' })
-
-    def self.valid_finishing_state?
-      false
-    end
-
   end
 
   class StateOne < ExpressionState
     transitions({ OperatorToken => 'StateTwo',
       CloseParenthesisToken => 'StateOne' })
 
-    def self.valid_finishing_state?
-      true
-    end
+    finish_here
   end
 
   class StateTwo < ExpressionState
     transitions({ OperandToken => 'StateThree',
         OpenParenthesisToken => 'StateZero' })
-
-    def self.valid_finishing_state?
-      false
-    end
   end
 
   class StateThree < ExpressionState
     transitions({ OperatorToken => 'StateTwo',
       CloseParenthesisToken => 'StateOne'})
 
-    def self.valid_finishing_state?
-      true
-    end
+    finish_here
   end
 end
