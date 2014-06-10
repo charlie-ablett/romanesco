@@ -11,11 +11,11 @@ module Romanesco
     end
 
     def add(element)
-      if element.is_a? Operand
-        insert_operand(element)
-      elsif element.is_a? Operator
-        insert_operator(element)
-      end
+      element.connect(@last_operator, @last_operand)
+      @last_operand = element if element.is_a? Operand
+      @last_operator = element if element.is_a? Operator
+
+      @required_variables << element.name.to_sym if element.is_a? VariableOperand
     end
 
     def close_parenthesis
@@ -52,18 +52,6 @@ module Romanesco
     end
 
     private
-
-    def insert_operand(operand)
-      operand.connect(@last_operator, @last_operand) if @last_operator
-
-      @required_variables << operand.name.to_sym if operand.is_a? VariableOperand
-      @last_operand = operand
-    end
-
-    def insert_operator(operator)
-      operator.connect(@last_operator, @last_operand)
-      @last_operator = operator
-    end
 
     def check_for_loops(start, options)
       iterate_to_variables(self, start, options) do |node, element, opts, block|
