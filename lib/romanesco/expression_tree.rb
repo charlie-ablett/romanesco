@@ -12,9 +12,9 @@ module Romanesco
 
     def add(element)
       element.connect(@last_operator, @last_operand)
+
       @last_operand = element if element.is_a? Operand
       @last_operator = element if element.is_a? Operator
-
       @required_variables << element.name.to_sym if element.is_a? VariableOperand
     end
 
