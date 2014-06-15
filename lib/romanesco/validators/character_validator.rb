@@ -5,7 +5,7 @@ module Romanesco
     class CharacterValidator < Validator
 
       def validate(raw_expression)
-        regex = /^[\w\s\-\*\+\/\(\)\.]*$/
+        regex = /^[\w\s\-\*\+\/\(\)\.,]*$/
 
         no_whitespace = raw_expression.gsub(/\s+/, '')
         raise InvalidExpressionError.new('Empty expression') if raw_expression.nil? || no_whitespace.empty?

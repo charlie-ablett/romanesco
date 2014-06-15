@@ -68,19 +68,15 @@ describe Romanesco::Validators::CharacterValidator do
     end
 
     it 'should raise an error' do
-      expect { subject.validate(nil) }.to raise_error
+      expect { subject.validate('$') }.to raise_error
     end
 
     it 'should raise an error' do
-      expect { subject.validate(nil) }.to raise_error
+      expect { subject.validate('          =') }.to raise_error
     end
 
     it 'should raise an error' do
-      expect { subject.validate(nil) }.to raise_error
-    end
-
-    it 'should raise an error' do
-      expect { subject.validate(nil) }.to raise_error
+      expect { subject.validate('#') }.to raise_error
     end
 
   end

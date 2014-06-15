@@ -28,7 +28,11 @@ module Romanesco
     def connect(last_operator, last_operand)
       if last_operator && last_operator.is_a?(ParenthesesOperator) && last_operator.precedence > self.precedence
         connect_in_place(last_operator, last_operand)
+      elsif last_operator && last_operator.is_a?(ParenthesesOperator) && self.is_a?(ParenthesesOperator)
+        last_operator.connect_to_left(self)
       elsif last_operator && last_operator.parent && last_operator.precedence >= self.precedence
+        connect_in_place_with_parent(last_operator, last_operand)
+      elsif last_operator && last_operator.parent && last_operator.precedence < self.precedence
         connect_in_place_with_parent(last_operator, last_operand)
       elsif last_operator && last_operator.is_a?(ParenthesesOperator) && last_operator.precedence < self.precedence
         connect_up_tree(last_operator)

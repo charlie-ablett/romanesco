@@ -38,6 +38,26 @@ describe Romanesco::Parser do
         it 'should parse' do
           expect{ subject.parse('3*(4+5)* 7')}.to_not raise_error
         end
+
+        it 'should parse commas just fine' do
+          expect{ subject.parse('a/(b/10,000)') }.to_not raise_error
+        end
+
+        it 'should parse' do
+          expect{ subject.parse('a/(b/10000)') }.to_not raise_error
+        end
+
+        it 'should parse' do
+          expect{ subject.parse('((a-b)/c)') }.to_not raise_error
+        end
+
+        it 'should parse' do
+          expect{ subject.parse('((a+b+c)/d)*100') }.to_not raise_error
+        end
+
+        it 'should parse' do
+          expect{ subject.parse('((a-b)/c)*100') }.to_not raise_error
+        end
       end
     end
 
@@ -55,6 +75,13 @@ describe Romanesco::Parser do
         expect { subject.parse('(') }.to raise_error
       end
 
+      it 'should raise an error for uneven parentheses' do
+        expect { subject.parse('))))))))))') }.to raise_error
+      end
+
+      it 'accept commas but not when the number is invalid' do
+        expect{ subject.parse('(,)') }.to raise_error
+      end
     end
 
   end

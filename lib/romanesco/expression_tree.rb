@@ -18,15 +18,17 @@ module Romanesco
     end
 
     def close_parenthesis
-      current_node = @last_operand
-
-      until current_node.is_a? ParenthesesOperator || current_node.parent.nil?
-        current_node = current_node.parent
+      if last_operator.is_a? ParenthesesOperator
+        current_node = @last_operator
+      else
+        current_node = @last_operand
+        until current_node.is_a? ParenthesesOperator || current_node.parent.nil?
+          current_node = current_node.parent
+        end
       end
 
       current_node.precedence = 0
-
-      @last_operand = @last_operator = current_node.parent || current_node
+      @last_operand = @last_operator = current_node
     end
 
     def evaluate(options={}, default_value=nil)

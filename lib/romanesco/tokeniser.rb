@@ -15,7 +15,7 @@ module Romanesco
     ]
 
     def tokenise(raw_expression)
-      expression = raw_expression.gsub(/\s+/, '')
+      expression = remove_commas_and_whitespace(raw_expression)
 
       tokens = []
 
@@ -32,6 +32,12 @@ module Romanesco
       end
 
       tokens
+    end
+
+    private
+
+    def remove_commas_and_whitespace(raw_expression)
+      raw_expression.gsub(/\s+/, '').gsub(',', '')
     end
   end
 end
