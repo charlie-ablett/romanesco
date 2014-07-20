@@ -91,6 +91,10 @@ describe Romanesco::Tokeniser do
 
     context 'for an invalid expression' do
 
+      it 'should raise an error due to having incorrect expression' do
+        expect { subject.tokenise("a b") }.to raise_error
+      end
+
       it 'should throw an error for an invalid character' do
         expect{ subject.tokenise('$') }.to raise_error
       end

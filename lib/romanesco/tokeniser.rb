@@ -37,6 +37,7 @@ module Romanesco
     private
 
     def remove_commas_and_whitespace(raw_expression)
+      raise InvalidExpressionError if raw_expression.match(/[a-zA-Z_]\s+[a-zA-Z_]/)
       raw_expression.gsub(/\s+/, '').gsub(',', '')
     end
   end
