@@ -8,11 +8,11 @@ You can inject variable values at runtime so that formulae can be used, edited a
 
 Currently Romanesco supports the four basic operators (addition, subtraction, multiplication, division) as well as parentheses. It supports the use of constants and named variables.
 
-Written by Charlie Ablett of Arctic Fox Computer Consulting with support from Dr Craig Taube-Schock.
+Written by Charlie Ablett of Arctic Fox Computer Consulting (NZ) with support from Dr Craig Taube-Schock.
 
 MIT License.
 
-So named because Romanesco broccoli has self-repeating patterns, much like the structure of the resulting expression tree. Also, it's tasty.
+So named because Romanesco broccoli has self-repeating patterns, much like the structure of the resulting expression tree. Also, it's delicious.
 
 ## Installation
 
@@ -44,14 +44,14 @@ If you have variables, inject them as follows:
     
 In fact, you can inject anything that responds to the message `evaluate(options)`...
 
-    class FakeClass
+    class OneHundred
       def evaluate(options)
         100
       end
     end
 
     expression = Romanesco.parse("one_hundred + 2.2")
-    result = expression.evaluate(one_hundred: FakeClass.new) # => 102.2        
+    result = expression.evaluate(one_hundred: OneHundred.new) # => 102.2        
     
 ... including *other expressions* (Don't worry, in this case we *can* detect infinite loops):
     
