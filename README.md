@@ -8,11 +8,11 @@ You can inject variable values at runtime so that formulae can be used, edited a
 
 Currently Romanesco supports the four basic operators (addition, subtraction, multiplication, division) as well as parentheses. It supports the use of constants and named variables.
 
-Written by Charlie Ablett of Enspiral Craftworks (http://www.enspiral.com) with support from Craig Taube-Schock.
+Written by Charlie Ablett of Arctic Fox Computer Consulting with support from Dr Craig Taube-Schock.
 
 MIT License.
 
-So named because Romanesco broccoli is neat-looking and has self-repeating patterns, much like the structure of the resulting expression tree. Also, it's tasty.
+So named because Romanesco broccoli has self-repeating patterns, much like the structure of the resulting expression tree. Also, it's tasty.
 
 ## Installation
 
